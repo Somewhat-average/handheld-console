@@ -1,0 +1,68 @@
+import math
+import pygame
+
+fps = 60
+score = 0
+lives = 3
+alien_score = 500
+player_pos = [width/2, height/2]
+player_angle = 0
+player_thrust = 0.3
+player_turn_speed = 5
+v_x, v_y = 0
+drag = 0.01
+asteroids = []
+aliens = []
+
+title_screen()
+while true:
+    if is_pressed(quit):
+        quit_game()
+
+    if player collided with object:
+        if lives <= 0:
+            show_score()
+            wait_for_input()
+            title_screen()
+        lives -= 1
+        player_respawn()
+
+    if is_pressed(a):
+        v_x_inc, v_y_inc = polarToCartesian(player_thrust, player_angle)
+        v_x += v_x_inc
+        v_y += v_y_inc
+
+    if is_pressed(b):
+        shoot_cannon()
+
+    if is_pressed(left):
+        player_angle += player_turn_speed
+
+    if is_pressed(right):
+        player_angle -= player_turn_speed
+
+    if bullet collided with object:
+        score += object.score
+        object.destroy()
+
+    v_x *= 1 - drag
+    v_y *= 1 - drag
+
+    player_pos[0] -= v_x
+    player_pos[1] -= v_y
+
+    if random() < ASTEROID_CHANCE_PER_TICK:
+        add_asteroid()
+
+
+    if not asteroids:
+        add_some_asteroids()
+
+    if score >= alien_score:
+        if random() < ALIEN_CHANCE_PER_TICK:
+            add_alien()
+
+    if aliens:
+        aliens.attack()
+
+    game.tick(fps)
