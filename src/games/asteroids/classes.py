@@ -39,17 +39,34 @@ class Player(pygame.sprite.Sprite):
         self.thrust_force = 0.05
         self.turn_speed = 5
         self.angle = 0
+
+        self.__frames_per_bullet = 30
+        self.__bullet_timer = 1
+        self.__can_shoot = True
         
         self.lives = 3
         self.invulnerable = False
         self.invulnerable_start = 0
         self.show_thrust = False
 
+    @property
+    def can_shoot(self):
+        self.__bullet_timer -= 1
+        if self.__bullet_timer == 0:
+            self.__can_shoot = True
+            self.__bullet_timer = self.__frames_per_bullet
+        else:
+            self.__can_shoot = False
+
+        return self.__can_shoot
+
+    def reset_shooting(self):
+        self.__bullet_timer = 1
+
     def state_reset(self):
         self.pos = Vector2(win_w/2, win_h/2)
         self.vel = Vector2(0, 0)
         self.angle = 0
-
 
     def full_reset(self):
         self.state_reset()

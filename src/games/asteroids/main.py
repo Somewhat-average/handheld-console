@@ -96,18 +96,22 @@ class AsteroidsScreen(BaseScreen):
 
         if self.game_active:
             if event.key == pygame.K_a:
-                shoot_sfx.play()
-                self.player_bullet_group.add(
-                    Bullet(
-                        self.player.rect.center,
-                        self.player.vel,
-                        self.player.angle,
-                        [self.all_sprites, self.player_bullet_group]
+                if player.can_shoot:
+                    shoot_sfx.play()
+                    self.player_bullet_group.add(
+                        Bullet(
+                            self.player.rect.center,
+                            self.player.vel,
+                            self.player.angle,
+                            [self.all_sprites, self.player_bullet_group]
+                        )
                     )
-                )
 
             elif event.key == pygame.K_s:
                 self.quit_game()
+
+            else:
+                player.reset_shooting()
 
         else:
             if event.key == pygame.K_RETURN:
